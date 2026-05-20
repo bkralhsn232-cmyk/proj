@@ -7,16 +7,21 @@ import connectDB from './src/config/db.js';
 import movieRoutes from './src/routes/movieRoutes.js';
 import authRoutes from './src/routes/authRoutes.js'; 
 
-dotenv.config();
-const app = express();
+const express = require('express');
 const cors = require('cors');
+const connectDB = require('./config/db'); // Or wherever your connectDB function is imported from
+require('dotenv').config();
+
+connectDB();
+const app = express();
+
 app.use(cors({
-    origin: 'http://localhost:5174', 
-    credentials: true             
+    origin: ['http://localhost:5173', 'http://localhost:5174'], 
+    credentials: true            
 }));
 
 
-connectDB();
+
 
 
 
