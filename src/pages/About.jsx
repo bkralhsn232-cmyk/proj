@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'; // Don't forget this import!
 
-function About() {
+export default function About() {
   const linkStyle = {
     color: "#bb86fc",
     textDecoration: "none",

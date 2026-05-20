@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function Login() {
+export default function Login() {
   return (
     <div style={{ 
       display: "flex",           // Flexbox to align content

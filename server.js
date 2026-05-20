@@ -9,10 +9,10 @@ import authRoutes from './src/routes/authRoutes.js';
 
 dotenv.config();
 const app = express();
-
+const cors = require('cors');
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000', 
-  credentials: true 
+    origin: 'http://localhost:5174', 
+    credentials: true             
 }));
 
 

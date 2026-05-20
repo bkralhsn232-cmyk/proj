@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-function Register() {
+export default function Register() {
   return (
     <div style={{ 
       display: "flex",           // 1. Enable Flexbox

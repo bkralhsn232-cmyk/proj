@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function MainPage() {
+export default function MainPage() {
   const [movies, setMovies] = useState([]); // Starts completely empty instead of using mock data
 
   useEffect(() => {
