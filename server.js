@@ -30,10 +30,10 @@ app.use(session({
     collectionName: 'sessions'
   }),
   cookie: {
-    secure: process.env.NODE_ENV === 'production',   // 🚀 TRUE on Render, FALSE on localhost
+    secure: process.env.NODE_ENV === 'production',  
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 🚀 'none' on Render, 'lax' on localhost
-    maxAge: 1000 * 60 * 60 * 24
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
+    maxAge: 1000 * 60 * 60 * 24 
   }
 }));
 
