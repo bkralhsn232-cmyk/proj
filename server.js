@@ -6,9 +6,15 @@ import MongoStore from 'connect-mongo';
 import connectDB from './src/config/db.js';
 import movieRoutes from './src/routes/movieRoutes.js';
 import authRoutes from './src/routes/authRoutes.js'; 
+import cors from 'cors';
 dotenv.config();
 const app = express();
-// Database Connection with Fallback String
+
+app.use(cors({
+    origin: '*',credentials: true
+}));
+
+
 connectDB();
 
 app.use(cors({
@@ -18,7 +24,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// Session Configuration with Fallback Store URL
+
 app.use(session({
   name: 'sid',
   secret: process.env.SESSION_SECRET || 'supersecretkey123', 
