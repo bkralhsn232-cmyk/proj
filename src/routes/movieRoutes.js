@@ -4,7 +4,7 @@ import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/', protect, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const movies = await Movie.find({ createdBy: req.session.userId });
     res.status(200).json(movies);
