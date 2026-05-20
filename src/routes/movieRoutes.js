@@ -1,5 +1,6 @@
 import express from 'express';
 import Movie from '../models/movie.js';
+import User from '../models/User.js'; 
 import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -36,10 +37,21 @@ router.post('/', protect, async (req, res) => {
 
 router.delete('/:id', protect, async (req, res) => {
   try {
-    const targetMovie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
+    const currentUser = await User.findById(req.session.userId);
+    if (!currentUser) {
+      return res.status(401).json({ message: 'User session invalid' });
+    }
 
+    const targetMovie = await Movie.findById(req.params.id);
     if (!targetMovie) {
-      return res.status(404).json({ message: 'Movie not found or you are not the owner' });
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    const isOwner = targetMovie.createdBy.toString() === req.session.userId;
+    const isAdmin = currentUser.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({ message: 'Unauthorized: Only the creator or an Admin can delete this title.' });
     }
 
     await targetMovie.deleteOne();
