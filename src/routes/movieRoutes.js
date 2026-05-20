@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import Movie from '../models/movie.js';
 import User from '../models/User.js'; 
 import protect from '../middleware/authMiddleware.js';
@@ -37,6 +38,10 @@ router.post('/', protect, async (req, res) => {
 
 router.delete('/:id', protect, async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid movie ID format' });
+    }
+
     const currentUser = await User.findById(req.session.userId);
     if (!currentUser) {
       return res.status(401).json({ message: 'User session invalid' });
@@ -63,13 +68,28 @@ router.delete('/:id', protect, async (req, res) => {
 
 router.put('/:id', protect, async (req, res) => {
   try {
-    const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
-
-    const targetMovie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
-    
-    if (!targetMovie) {
-      return res.status(404).json({ message: 'Movie not found or unauthorized' });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'Invalid movie ID format' });
     }
+
+    const currentUser = await User.findById(req.session.userId);
+    if (!currentUser) {
+      return res.status(401).json({ message: 'User session invalid' });
+    }
+
+    const targetMovie = await Movie.findById(req.params.id);
+    if (!targetMovie) {
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    const isOwner = targetMovie.createdBy.toString() === req.session.userId;
+    const isAdmin = currentUser.role === 'admin';
+
+    if (!isOwner && !isAdmin) {
+      return res.status(403).json({ message: 'Unauthorized: Only the creator or an Admin can update this title.' });
+    }
+
+    const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
 
     targetMovie.title = title ?? targetMovie.title;
     targetMovie.genre = genre ?? targetMovie.genre;
