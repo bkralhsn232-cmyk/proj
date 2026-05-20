@@ -43,13 +43,38 @@ router.delete('/:id', protect, async (req, res) => {
     const targetMovie = await movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
 
     if (!targetMovie) {
-      return res.status(404).json({ message: 'الفيلم غير موجود أو غير مصرح لك بحذفه' });
+      return res.status(404).json({ message: 'Movie not found or you are not the owner' });
     }
 
     await targetMovie.deleteOne();
-    res.json({ message: 'تم حذف الفيلم بنجاح' });
+    res.json({ message: 'Movie deleted successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+router.put('/:id', protect, async (req, res) => {
+  try {
+    const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
+
+    const movie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
+    
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found or unauthorized' });
+    }
+    movie.title = title ?? movie.title;
+    movie.genre = genre ?? movie.genre;
+    movie.director = director ?? movie.director;
+    movie.releaseYear = releaseYear ?? movie.releaseYear;
+    movie.rating = rating ?? movie.rating;
+    movie.imageUrl = imageUrl ?? movie.imageUrl;
+    movie.description = description ?? movie.description;
+
+    const updatedMovie = await movie.save();
+    res.status(200).json(updatedMovie);
+  } catch (error) {
+    console.error("Error updating movie:", error);
+    res.status(500).json({ message: 'Server error while updating movie' });
   }
 });
 
