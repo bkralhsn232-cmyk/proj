@@ -8,9 +8,6 @@ import movieRoutes from './src/routes/movieRoutes.js';
 import authRoutes from './src/routes/authRoutes.js'; 
 
 
-
-
-
 connectDB();
 const app = express();
 
@@ -19,13 +16,7 @@ app.use(cors({
     credentials: true            
 }));
 
-
-
-
-
-
 app.use(express.json());
-
 
 app.use(session({
   name: 'sid',
