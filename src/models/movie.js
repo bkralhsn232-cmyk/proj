@@ -44,7 +44,7 @@ const movieSchema = new mongoose.Schema({
 });
 
 // Create the model using the schema
-const Movie = mongoose.model('Movie', movieSchema);
+const movie = mongoose.model('Movie', movieSchema);
 
 // CRUCIAL: This provides the default export that movieRoutes.js is hunting for!
-export default Movie;
+export default movie;

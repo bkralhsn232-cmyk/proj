@@ -1,5 +1,5 @@
 import express from 'express';
-import Movie from '../models/movie.js';
+import movie from '../models/movie.js';
 import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', protect, async (req, res) => {
   try {
-    const movies = await Movie.find({ createdBy: req.session.userId });
+    const movies = await movie.find({ createdBy: req.session.userId });
     res.status(200).json(movies);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -19,7 +19,7 @@ router.post('/', protect, async (req, res) => {
   try {
     const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
 
-    const newMovie = await Movie.create({
+    const newMovie = await movie.create({
       title,
       genre,
       director,
@@ -40,7 +40,7 @@ router.post('/', protect, async (req, res) => {
 router.delete('/:id', protect, async (req, res) => {
   try {
     
-    const targetMovie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
+    const targetMovie = await movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
 
     if (!targetMovie) {
       return res.status(404).json({ message: 'الفيلم غير موجود أو غير مصرح لك بحذفه' });
