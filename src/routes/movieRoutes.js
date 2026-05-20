@@ -4,7 +4,6 @@ import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-
 router.get('/', protect, async (req, res) => {
   try {
     const movies = await Movie.find({ createdBy: req.session.userId });
@@ -13,7 +12,6 @@ router.get('/', protect, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 router.post('/', protect, async (req, res) => {
   try {
@@ -36,10 +34,8 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
-
 router.delete('/:id', protect, async (req, res) => {
   try {
-    
     const targetMovie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
 
     if (!targetMovie) {
@@ -57,20 +53,21 @@ router.put('/:id', protect, async (req, res) => {
   try {
     const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
 
-    const movie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
+    const targetMovie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
     
-    if (!movie) {
+    if (!targetMovie) {
       return res.status(404).json({ message: 'Movie not found or unauthorized' });
     }
-    movie.title = title ?? movie.title;
-    movie.genre = genre ?? movie.genre;
-    movie.director = director ?? movie.director;
-    movie.releaseYear = releaseYear ?? movie.releaseYear;
-    movie.rating = rating ?? movie.rating;
-    movie.imageUrl = imageUrl ?? movie.imageUrl;
-    movie.description = description ?? movie.description;
 
-    const updatedMovie = await movie.save();
+    targetMovie.title = title ?? targetMovie.title;
+    targetMovie.genre = genre ?? targetMovie.genre;
+    targetMovie.director = director ?? targetMovie.director;
+    targetMovie.releaseYear = releaseYear ?? targetMovie.releaseYear;
+    targetMovie.rating = rating ?? targetMovie.rating;
+    targetMovie.imageUrl = imageUrl ?? targetMovie.imageUrl;
+    targetMovie.description = description ?? targetMovie.description;
+
+    const updatedMovie = await targetMovie.save();
     res.status(200).json(updatedMovie);
   } catch (error) {
     console.error("Error updating movie:", error);
