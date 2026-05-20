@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const movies = await Movie.find({ createdBy: req.session.userId });
+    const movies = await Movie.find({ });
     res.status(200).json(movies);
   } catch (error) {
     res.status(500).json({ message: error.message });
