@@ -7,8 +7,8 @@ import connectDB from './src/config/db.js';
 import movieRoutes from './src/routes/movieRoutes.js';
 import authRoutes from './src/routes/authRoutes.js'; 
 
-const express = require('express');
-const cors = require('cors');
+
+
 const connectDB = require('./config/db'); // Or wherever your connectDB function is imported from
 require('dotenv').config();
 
