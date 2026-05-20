@@ -1,10 +1,10 @@
 import express from 'express';
-import Movie from '../models/Movie.js';
+import Movie from '../models/movie.js';
 import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// 1. GET ALL MOVIES (GET /api/movies)
+
 router.get('/', protect, async (req, res) => {
   try {
     const movies = await Movie.find({ createdBy: req.session.userId });
@@ -14,7 +14,7 @@ router.get('/', protect, async (req, res) => {
   }
 });
 
-// 2. CREATE A MOVIE (POST /api/movies)
+
 router.post('/', protect, async (req, res) => {
   try {
     const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
@@ -36,10 +36,10 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
-// 3. DELETE A MOVIE (DELETE /api/movies/:id)
+
 router.delete('/:id', protect, async (req, res) => {
   try {
-    // Only find the movie if it belongs to the logged-in user
+    
     const targetMovie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
 
     if (!targetMovie) {
