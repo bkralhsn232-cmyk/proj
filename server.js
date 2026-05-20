@@ -40,7 +40,7 @@ app.use(session({
 
 app.use('/api/auth', authRoutes);   
 app.use('/api/movies', movieRoutes); 
-app.use('/api/comments', commentRoutes);
+app.use('/api/comments', comRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
