@@ -1,5 +1,5 @@
 
-import User from '../models/User.js';
+import user from '../models/user.js';
 
 export const registerUser = async (req, res) => {
   try {
@@ -9,12 +9,12 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'يرجى إدخال جميع الحقول المطلوب' });
     }
 
-    const userExists = await User.findOne({ $or: [{ email }, { username }] });
+    const userExists = await user.findOne({ $or: [{ email }, { username }] });
     if (userExists) {
       return res.status(400).json({ message: 'اسم المستخدم أو البريد الإلكتروني مستخدم بالفعل' });
     }
 
-    const user = await User.create({
+    const user = await user.create({
       username,
       email,
       password
@@ -43,7 +43,7 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'يرجى إدخال البريد الإلكتروني وكلمة المرور' });
     }
 
-    const user = await User.findOne({ email });
+    const user = await user.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'البريد الإلكتروني أو كلمة المرور غير صحيحة' });
     }
