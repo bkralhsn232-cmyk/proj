@@ -6,6 +6,7 @@ import MongoStore from 'connect-mongo';
 import connectDB from './src/config/db.js';
 import movieRoutes from './src/routes/movieRoutes.js';
 import authRoutes from './src/routes/authRoutes.js'; 
+import comRoutes from './src/routes/comRoutes.js';
 
 connectDB();
 const app = express();
@@ -39,7 +40,7 @@ app.use(session({
 
 app.use('/api/auth', authRoutes);   
 app.use('/api/movies', movieRoutes); 
-
+app.use('/api/comments', commentRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.get('/', (req, res) => {
