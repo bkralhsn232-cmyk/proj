@@ -10,7 +10,7 @@ import authRoutes from './src/routes/authRoutes.js';
 
 connectDB();
 const app = express();
-
+app.set('trust proxy', 1);
 app.use(cors({
     origin: ['http://localhost:5173', 'http://localhost:5174', 'https://web-project-2-frontend-zkhy.onrender.com'], 
     credentials: true            
@@ -31,7 +31,8 @@ app.use(session({
   cookie: {
     secure: false, 
     httpOnly: true,
-    sameSite: 'lax'
+    sameSite: 'none',
+    maxAge: 1000 * 60 * 60 * 24
   }
 }));
 
