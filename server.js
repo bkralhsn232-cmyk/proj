@@ -9,8 +9,7 @@ import authRoutes from './src/routes/authRoutes.js';
 
 
 
-const connectDB = require('./config/db'); // Or wherever your connectDB function is imported from
-require('dotenv').config();
+
 
 connectDB();
 const app = express();
