@@ -4,12 +4,12 @@ import mongoose from 'mongoose';
 const movieSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, 'يرجى إدخال عنوان الفيلم'],
+    required: [true, 'Please enter a movie title'],
     trim: true
   },
   genre: {
     type: String,
-    required: [true, 'يرجى إدخال تصنيف الفيلم'],
+    required: [true, 'Please enter a movie genre'],
     trim: true
   },
   director: {
@@ -18,13 +18,13 @@ const movieSchema = new mongoose.Schema({
   },
   releaseYear: {
     type: Number,
-    required: [true, 'يرجى إدخال سنة الإصدار']
+    required: [true, 'Please enter the release year']
   },
   rating: {
     type: Number,
     min: 1,
-    max: 5,
-    required: [true, 'يرجى إدخال تقييم الفيلم من 1 إلى 5']
+    max: 10,
+    required: [true, 'please enter a rating between 1 and 10']
   },
   imageUrl: {
     type: String,
