@@ -41,6 +41,15 @@ app.use('/api/auth', authRoutes);
 app.use('/api/movies', movieRoutes); 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(` Server running on port ${PORT}`);
+
+app.get('/', (req, res) => {
+    res.json({ 
+        status: "success", 
+        message: "Backend API is live and running perfectly!" 
+    });
+});
+
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is running live on port ${PORT}`);
 });
