@@ -6,18 +6,19 @@ import MongoStore from 'connect-mongo';
 import connectDB from './src/config/db.js';
 import movieRoutes from './src/routes/movieRoutes.js';
 import authRoutes from './src/routes/authRoutes.js'; 
-import cors from 'cors';
+
 dotenv.config();
 const app = express();
-
-
-
-connectDB();
 
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000', 
   credentials: true 
 }));
+
+
+connectDB();
+
+
 
 app.use(express.json());
 
