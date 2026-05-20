@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  // 🚀 ADDED: System role to handle admin functionality
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user' // Every new registration automatically defaults to a regular user
   }
 }, { timestamps: true });
 
