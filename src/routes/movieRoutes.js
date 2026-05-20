@@ -1,48 +1,81 @@
-import mongoose from 'mongoose';
+import express from 'express';
+import Movie from '../models/movie.js';
+import protect from '../middleware/authMiddleware.js';
 
-const movieSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: [true, 'Please enter a movie title'],
-    trim: true
-  },
-  genre: {
-    type: String,
-    required: [true, 'Please enter a movie genre'],
-    trim: true
-  },
-  director: {
-    type: String,
-    trim: true
-  },
-  releaseYear: {
-    type: Number,
-    required: [true, 'Please enter the release year']
-  },
-  rating: {
-    type: Number,
-    min: 1,
-    max: 10,
-    required: [true, 'please enter a rating between 1 and 10']
-  },
-  imageUrl: {
-    type: String,
-    default: ''
-  },
-  description: {
-    type: String,
-    trim: true
-  },
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', 
-    required: true
+const router = express.Router();
+
+
+router.get('/', protect, async (req, res) => {
+  try {
+    const movies = await Movie.find({ createdBy: req.session.userId });
+    res.status(200).json(movies);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}, {
-  timestamps: true 
 });
 
-// 🚀 FIXED: Capitalized the model name to match standard practices
-const Movie = mongoose.model('Movie', movieSchema);
 
-export default Movie;
+router.post('/', protect, async (req, res) => {
+  try {
+    const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
+
+    const newMovie = await Movie.create({
+      title,
+      genre,
+      director,
+      releaseYear,
+      rating,
+      imageUrl,
+      description,
+      createdBy: req.session.userId 
+    });
+
+    res.status(201).json(newMovie);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+
+router.delete('/:id', protect, async (req, res) => {
+  try {
+    
+    const targetMovie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
+
+    if (!targetMovie) {
+      return res.status(404).json({ message: 'Movie not found or you are not the owner' });
+    }
+
+    await targetMovie.deleteOne();
+    res.json({ message: 'Movie deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.put('/:id', protect, async (req, res) => {
+  try {
+    const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
+
+    const movie = await Movie.findOne({ _id: req.params.id, createdBy: req.session.userId });
+    
+    if (!movie) {
+      return res.status(404).json({ message: 'Movie not found or unauthorized' });
+    }
+    movie.title = title ?? movie.title;
+    movie.genre = genre ?? movie.genre;
+    movie.director = director ?? movie.director;
+    movie.releaseYear = releaseYear ?? movie.releaseYear;
+    movie.rating = rating ?? movie.rating;
+    movie.imageUrl = imageUrl ?? movie.imageUrl;
+    movie.description = description ?? movie.description;
+
+    const updatedMovie = await movie.save();
+    res.status(200).json(updatedMovie);
+  } catch (error) {
+    console.error("Error updating movie:", error);
+    res.status(500).json({ message: 'Server error while updating movie' });
+  }
+});
+
+export default router;
