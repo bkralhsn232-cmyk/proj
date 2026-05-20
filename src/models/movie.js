@@ -1,4 +1,3 @@
-// src/models/Movie.js
 import mongoose from 'mongoose';
 
 const movieSchema = new mongoose.Schema({
@@ -36,15 +35,14 @@ const movieSchema = new mongoose.Schema({
   },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Links this movie directly to the user who added it
+    ref: 'User', 
     required: true
   }
 }, {
-  timestamps: true // Automatically creates 'createdAt' and 'updatedAt' fields in MongoDB
+  timestamps: true 
 });
 
-// Create the model using the schema
-const movie = mongoose.model('Movie', movieSchema);
+// 🚀 FIXED: Capitalized the model name to match standard practices
+const Movie = mongoose.model('Movie', movieSchema);
 
-// CRUCIAL: This provides the default export that movieRoutes.js is hunting for!
-export default movie;
+export default Movie;
