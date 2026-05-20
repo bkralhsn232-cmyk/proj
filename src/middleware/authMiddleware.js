@@ -1,7 +1,13 @@
-const protect = (req, res, next) => {
-  if (req.session && req.session.userId) {
-    return next();
-  }
-    return res.status(401).json({ message: 'You are not authorized to access this resource' });
+import axios from 'axios';
+
+const API = axios.create({
+  baseURL: 'https://proj-vpn5.onrender.com',
+  withCredentials: true // 🚀 This is the critical setting that forces cookies to travel with requests
+});
+
+export const deleteMovie = async (movieId) => {
+  const response = await API.delete(`/api/movies/${movieId}`);
+  return response.data;
 };
-export default protect;
+
+export default API;
