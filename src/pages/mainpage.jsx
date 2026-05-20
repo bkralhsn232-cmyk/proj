@@ -18,7 +18,7 @@ export default function MainPage() {
           <img src={movie.imageUrl} alt={movie.title} style={{ width: "100%" }} />
           <h3>{movie.title}</h3>
           <p>{movie.genre}</p>
-          <small>بواسطة: {movie.createdBy?.username || 'مجهول'}</small>
+          <small>By: {movie.createdBy?.username || 'Unknown'}</small>
         </div>
       ))}
     </div>
