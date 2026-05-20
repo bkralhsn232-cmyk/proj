@@ -12,7 +12,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'], 
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'https://web-project-2-frontend-zkhy.onrender.com'], 
     credentials: true            
 }));
 
