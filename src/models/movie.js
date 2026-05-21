@@ -42,7 +42,8 @@ const movieSchema = new mongoose.Schema({
   timestamps: true 
 });
 
-// 🚀 FIXED: Capitalized the model name to match standard practices
+movieSchema.index({ title: 1, releaseYear: 1 }, { unique: true });
+
 const Movie = mongoose.model('Movie', movieSchema);
 
 export default Movie;
