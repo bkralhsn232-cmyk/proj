@@ -24,9 +24,10 @@ export const registerUser = async (req, res) => {
     res.status(201).json({
       message: 'Registration successful',
       user: {
-        id: user._id,
+        _id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        role: user.role 
       }
     });
   } catch (error) {
@@ -42,7 +43,6 @@ export const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Please enter both email and password' });
     }
 
-    // 4. Update login queries to use capital 'User' model as well
     const foundUser = await User.findOne({ email });
     if (!foundUser) {
       return res.status(401).json({ message: 'Email or password is incorrect' });
@@ -58,9 +58,10 @@ export const loginUser = async (req, res) => {
     res.status(200).json({
       message: 'login successful',
       user: {
-        id: foundUser._id,
+        _id: foundUser._id,
         username: foundUser.username,
-        email: foundUser.email
+        email: foundUser.email,
+        role: foundUser.role 
       }
     });
   } catch (error) {
