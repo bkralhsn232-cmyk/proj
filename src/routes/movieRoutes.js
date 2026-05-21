@@ -30,7 +30,7 @@ router.post('/', protect, async (req, res) => {
 
     if (duplicateExists) {
       return res.status(400).json({ 
-        message: `"${title}" (${releaseYear}) has already been uploaded to the database!` 
+        message: `this movie has already been uploaded to the database!` 
       });
     }
 
