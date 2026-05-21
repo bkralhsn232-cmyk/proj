@@ -19,8 +19,23 @@ router.post('/', protect, async (req, res) => {
   try {
     const { title, genre, director, releaseYear, rating, imageUrl, description } = req.body;
 
+    if (!title || !releaseYear || !genre || !rating) {
+      return res.status(400).json({ message: 'Missing required validation fields. Title, Year, Genre, and Rating are mandatory.' });
+    }
+
+    const duplicateExists = await Movie.findOne({
+      title: { $regex: `^${title.trim()}$`, $options: 'i' },
+      releaseYear: Number(releaseYear)
+    });
+
+    if (duplicateExists) {
+      return res.status(400).json({ 
+        message: `"${title}" (${releaseYear}) has already been uploaded to the database!` 
+      });
+    }
+
     const newMovie = await Movie.create({
-      title,
+      title: title.trim(),
       genre,
       director,
       releaseYear,
